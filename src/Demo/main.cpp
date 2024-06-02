@@ -40,5 +40,20 @@ auto main() -> int {
 
     print_matrix(rotation_matrix);
 
+    constexpr auto perspective_matrix_params =
+        Luminol::Maths::Transform::PerspectiveMatrixParams<double>{
+            .fov = Luminol::Units::Degrees{90.0},
+            .aspect_ratio = 16.0 / 9.0,
+            .near_plane = 0.1,
+            .far_plane = 100.0
+        };
+
+    const auto perspective_matrix =
+        Luminol::Maths::Transform::left_handed_perspective_projection_matrix(
+            perspective_matrix_params
+        );
+
+    print_matrix(perspective_matrix);
+
     return 0;
 }

@@ -9,11 +9,12 @@
 
 namespace Luminol::Maths::Transform {
 
+template <std::floating_point T>
 struct PerspectiveMatrixParams {
-    Luminol::Units::Degrees_f fov = {0.0f};
-    float aspect_ratio = {0.0f};
-    float near_plane = {0.0f};
-    float far_plane = {0.0f};
+    Units::Angle<T, Units::Degree> fov = {0.0};
+    T aspect_ratio = {0.0};
+    T near_plane = {0.0};
+    T far_plane = {0.0};
 };
 
 template <typename T>
@@ -23,14 +24,15 @@ struct LookAtParams {
     Vector<T, 3> up_vector;
 };
 
-template <typename T>
+template <std::floating_point T>
 auto left_handed_perspective_projection_matrix(
-    const PerspectiveMatrixParams& params
+    const PerspectiveMatrixParams<T>& params
 ) -> Matrix<T, 4, 4> {
     const auto& [fov, aspect_ratio, near, far] = params;
 
-    const auto tan_half_fov =
-        std::tan(fov.as<Luminol::Units::Radian>().get_value() / 2.0f);
+    const auto tan_half_fov = std::tan(
+        fov.template as<Luminol::Units::Radian>().get_value() / T{2.0}
+    );
 
     const auto range = far - near;
 
@@ -39,19 +41,19 @@ auto left_handed_perspective_projection_matrix(
     // [0] [0] [C] [D]
     // [0] [0] [E] [0]
 
-    auto perspective_matrix = Matrix4x4f::zero();
+    auto perspective_matrix = Matrix<T, 4, 4>::zero();
 
     // A
-    perspective_matrix[0][0] = 1.0f / (aspect_ratio * tan_half_fov);
+    perspective_matrix[0][0] = T{1.0} / (aspect_ratio * tan_half_fov);
 
     // B
-    perspective_matrix[1][1] = 1.0f / tan_half_fov;
+    perspective_matrix[1][1] = T{1.0} / tan_half_fov;
 
     // C
     perspective_matrix[2][2] = far / range;
 
     // D
-    perspective_matrix[2][3] = 1.0f;
+    perspective_matrix[2][3] = T{1.0};
 
     // E
     perspective_matrix[3][2] = -near * far / range;
