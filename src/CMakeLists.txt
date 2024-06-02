@@ -1,5 +1,3 @@
-add_subdirectory(Demo)
-
 add_library(LuminolMaths INTERFACE)
 
 target_compile_features(LuminolMaths INTERFACE cxx_std_20)
