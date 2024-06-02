@@ -2,7 +2,21 @@
 
 #include <LuminolMaths/Vector.hpp>
 #include <LuminolMaths/Matrix.hpp>
+#include <LuminolMaths/Transform.hpp>
 #include <LuminolMaths/Units/Angle.hpp>
+
+namespace {
+
+auto print_matrix(const Luminol::Maths::Matrix4x4f& matrix) -> void {
+    for (size_t i = 0; i < 4; ++i) {
+        for (size_t j = 0; j < 4; ++j) {
+            std::cout << matrix[i].at(j) << ' ';
+        }
+        std::cout << '\n';
+    }
+}
+
+}  // namespace
 
 auto main() -> int {
     std::cout << "Hello, World!\n";
@@ -15,15 +29,16 @@ auto main() -> int {
 
     constexpr auto matrix = Luminol::Maths::Matrix4x4::identity();
 
-    for (size_t i = 0; i < 4; ++i) {
-        for (size_t j = 0; j < 4; ++j) {
-            std::cout << matrix[i].at(j) << ' ';
-        }
-        std::cout << '\n';
-    }
+    print_matrix(matrix);
 
     constexpr auto angle = Luminol::Units::Degrees{90.0};
     std::cout << angle.as<Luminol::Units::Radian>().get_value() << '\n';
+
+    const auto rotation_matrix = Luminol::Maths::Transform::rotate_x<double, 4>(
+        angle.as<Luminol::Units::Radian>()
+    );
+
+    print_matrix(rotation_matrix);
 
     return 0;
 }
