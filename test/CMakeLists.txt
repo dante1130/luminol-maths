@@ -1,3 +1,4 @@
+add_subdirectory(Maths)
 add_subdirectory(Units)
 
 add_library(LuminolMaths.TestUtils INTERFACE)
