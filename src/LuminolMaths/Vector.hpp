@@ -281,6 +281,15 @@ public:
         return result;
     }
 
+    [[nodiscard]] constexpr auto operator*(const Vector& other) const
+        -> Vector {
+        auto result = Vector{};
+        for (size_t i = 0; i < N; ++i) {
+            result.vector[i] = this->vector[i] * other.vector[i];
+        }
+        return result;
+    }
+
     /**
      * \brief Returns a vector with the components of this vector multiplied by
      * a scalar.
@@ -339,6 +348,13 @@ public:
     constexpr auto operator-=(const Vector& other) -> Vector& {
         for (size_t i = 0; i < N; ++i) {
             this->vector[i] -= other.vector[i];
+        }
+        return *this;
+    }
+
+    constexpr auto operator*=(const Vector& other) -> Vector& {
+        for (size_t i = 0; i < N; ++i) {
+            this->vector[i] *= other.vector[i];
         }
         return *this;
     }
