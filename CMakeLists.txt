@@ -7,7 +7,7 @@ option(LUMINOL_MATHS_BUILD_DEMO "Build LuminolMaths demo" ON)
 option(LUMINOL_MATHS_BUILD_TESTS "Build LuminolMaths tests" ON)
 
 if (LUMINOL_MATHS_EXPORT_COMPILE_COMMANDS)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON))
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
     add_custom_target(
         copy-compile-commands ALL
