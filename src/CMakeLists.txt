@@ -1,4 +1,6 @@
-add_subdirectory(Demo)
+if (LUMINOL_MATHS_BUILD_DEMO)
+    add_subdirectory(Demo)
+endif()
 
 add_library(LuminolMaths INTERFACE)
 
