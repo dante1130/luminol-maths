@@ -5,7 +5,7 @@
 namespace Luminol::Maths::VectorUtils {
 
 constexpr auto orthogonal_basis(
-    Vector3& vector_a, Vector3& vector_b, Vector3& vector_c
-) -> void;
+    const Vector3& vector_a, const Vector3& vector_b
+) -> std::tuple<Vector3, Vector3, Vector3>;
 
 }  // namespace Luminol::Maths::VectorUtils
