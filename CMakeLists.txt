@@ -6,7 +6,16 @@ option(LUMINOL_MATHS_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 option(LUMINOL_MATHS_BUILD_DEMO "Build LuminolMaths demo" ON)
 option(LUMINOL_MATHS_BUILD_TESTS "Build LuminolMaths tests" ON)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ${LUMINOL_MATHS_EXPORT_COMPILE_COMMANDS})
+if (LUMINOL_MATHS_EXPORT_COMPILE_COMMANDS)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON))
+
+    add_custom_target(
+        copy-compile-commands ALL
+        ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+        ${CMAKE_CURRENT_LIST_DIR}
+    )
+endif()
 
 set(LUMINOL_MATHS_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(LUMINOL_MATHS_RES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/res)
@@ -21,9 +30,3 @@ if (LUMINOL_MATHS_BUILD_TESTS)
     add_subdirectory(${LUMINOL_MATHS_TEST_DIR})
 endif()
 
-add_custom_target(
-    copy-compile-commands ALL
-    ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_BINARY_DIR}/compile_commands.json
-    ${CMAKE_CURRENT_LIST_DIR}
-)
