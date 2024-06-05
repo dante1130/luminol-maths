@@ -4,7 +4,7 @@
 
 namespace Luminol::Units {
 
-enum class UnitEnum { Length, Time, Angle, Speed, Mass, Acceleration };
+enum class UnitEnum { Length, Time, Angle, Speed, Mass, Acceleration, Energy };
 
 template <typename T, const T& Num, const T& Den>
 struct RefRatio {

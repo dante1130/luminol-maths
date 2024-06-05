@@ -6,6 +6,7 @@
 #include <LuminolMaths/Units/Angle.hpp>
 #include <LuminolMaths/Units/Mass.hpp>
 #include <LuminolMaths/Units/Acceleration.hpp>
+#include <LuminolMaths/Units/Energy.hpp>
 
 namespace {
 
