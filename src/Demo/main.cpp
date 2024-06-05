@@ -5,6 +5,7 @@
 #include <LuminolMaths/Transform.hpp>
 #include <LuminolMaths/Units/Angle.hpp>
 #include <LuminolMaths/Units/Mass.hpp>
+#include <LuminolMaths/Units/Acceleration.hpp>
 
 namespace {
 
@@ -60,6 +61,13 @@ auto main() -> int {
 
     std::cout << "1 kg in mg: "
               << mass.as<Luminol::Units::Milligram>().get_value() << '\n';
+
+    constexpr auto acceleration = Luminol::Units::MetersPerSecondSquared{9.81};
+
+    std::cout << "9.81 m/s^2 in cm/s^2: "
+              << acceleration.as<Luminol::Units::CentimeterPerSecondSquared>()
+                     .get_value()
+              << '\n';
 
     return 0;
 }
