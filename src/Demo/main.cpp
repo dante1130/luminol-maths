@@ -4,6 +4,7 @@
 #include <LuminolMaths/Matrix.hpp>
 #include <LuminolMaths/Transform.hpp>
 #include <LuminolMaths/Units/Angle.hpp>
+#include <LuminolMaths/Units/Mass.hpp>
 
 namespace {
 
@@ -54,6 +55,11 @@ auto main() -> int {
         );
 
     print_matrix(perspective_matrix);
+
+    constexpr auto mass = Luminol::Units::Kilograms{1.0};
+
+    std::cout << "1 kg in mg: "
+              << mass.as<Luminol::Units::Milligram>().get_value() << '\n';
 
     return 0;
 }
