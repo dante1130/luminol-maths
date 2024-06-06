@@ -4,7 +4,7 @@
 
 #include <LuminolMaths/Units/Unit.hpp>
 #include <LuminolMaths/Units/Mass.hpp>
-#include <LuminolMaths/Units/Speed.hpp>
+#include <LuminolMaths/Units/Velocity.hpp>
 
 namespace Luminol::Units {
 
@@ -21,27 +21,32 @@ using Nanojoule = EnergyUnitType<std::nano>;
 template <std::floating_point T, typename U>
 class Energy : public Unit<T, U> {
 public:
-    template <typename MassU, typename SpeedU>
+    template <typename MassU, typename VelocityU>
         requires(
-            MassU::type == UnitEnum::Mass && SpeedU::type == UnitEnum::Speed
+            MassU::type == UnitEnum::Mass &&
+            VelocityU::type == UnitEnum::Velocity
         )
-    constexpr Energy(const Mass<T, MassU>& mass, const Speed<T, SpeedU>& speed)
-        : Unit<T, U>{energy_from_mass_and_speed(mass, speed)} {}
+    constexpr Energy(
+        const Mass<T, MassU>& mass, const Velocity<T, VelocityU>& velocity
+    )
+        : Unit<T, U>{energy_from_mass_and_velocity(mass, velocity)} {}
 
 private:
-    template <typename MassU, typename SpeedU>
+    template <typename MassU, typename VelocityU>
         requires(
-            MassU::type == UnitEnum::Mass && SpeedU::type == UnitEnum::Speed
+            MassU::type == UnitEnum::Mass &&
+            VelocityU::type == UnitEnum::Velocity
         )
-    constexpr static auto energy_from_mass_and_speed(
-        const Mass<T, MassU>& mass, const Speed<T, SpeedU>& speed
+    constexpr static auto energy_from_mass_and_velocity(
+        const Mass<T, MassU>& mass, const Velocity<T, VelocityU>& velocity
     ) -> T {
         const auto mass_in_kg = mass.template as<Kilogram>().get_value();
-        const auto speed_in_mps =
-            speed.template as<MeterPerSecond>().get_value();
+        const auto velocity_in_mps =
+            velocity.template as<MeterPerSecond>().get_value();
 
         constexpr auto half = T{0.5};
-        const auto joules = half * mass_in_kg * speed_in_mps * speed_in_mps;
+        const auto joules =
+            half * mass_in_kg * velocity_in_mps * velocity_in_mps;
 
         constexpr auto energy_ratio = U::ratio::num / U::ratio::den;
 

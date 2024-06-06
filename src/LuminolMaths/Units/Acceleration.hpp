@@ -2,20 +2,22 @@
 
 #include <ratio>
 
-#include <LuminolMaths/Units/Speed.hpp>
+#include <LuminolMaths/Units/Velocity.hpp>
 #include <LuminolMaths/Units/Time.hpp>
 #include <LuminolMaths/Units/Unit.hpp>
 
 namespace Luminol::Units {
 
-template <typename SpeedU, typename TimeU>
-    requires(SpeedU::type == UnitEnum::Speed && TimeU::type == UnitEnum::Time)
+template <typename VelocityU, typename TimeU>
+    requires(
+        VelocityU::type == UnitEnum::Velocity && TimeU::type == UnitEnum::Time
+    )
 class AccelerationUnitType
     : public UnitType<
           UnitEnum::Acceleration,
-          std::ratio_divide<typename SpeedU::ratio, typename TimeU::ratio>> {
+          std::ratio_divide<typename VelocityU::ratio, typename TimeU::ratio>> {
 public:
-    using SpeedType = SpeedU;
+    using VelocityType = VelocityU;
 };
 
 using KilometerPerHourSquared = AccelerationUnitType<KilometerPerHour, Hour>;
@@ -55,20 +57,22 @@ public:
     template <typename TimeU>
         requires(TimeU::type == UnitEnum::Time)
     constexpr auto operator*(const Time<T, TimeU>& time) const
-        -> Speed<T, typename U::SpeedType> {
-        return Speed<T, typename U::SpeedType>{
+        -> Velocity<T, typename U::VelocityType> {
+        return Velocity<T, typename U::VelocityType>{
             this->get_value() * time.get_value() *
-            time.template get_ratio<typename U::SpeedType>()
+            time.template get_ratio<typename U::VelocityType>()
         };
     }
 };
 
-template <std::floating_point T, typename SpeedU, typename TimeU>
-    requires(SpeedU::type == UnitEnum::Speed && TimeU::type == UnitEnum::Time)
+template <std::floating_point T, typename VelocityU, typename TimeU>
+    requires(
+        VelocityU::type == UnitEnum::Velocity && TimeU::type == UnitEnum::Time
+    )
 constexpr auto operator/(
-    const Speed<T, SpeedU>& velocity, const Time<T, TimeU>& time
-) -> Acceleration<T, AccelerationUnitType<SpeedU, TimeU>> {
-    return Acceleration<T, AccelerationUnitType<SpeedU, TimeU>>{
+    const Velocity<T, VelocityU>& velocity, const Time<T, TimeU>& time
+) -> Acceleration<T, AccelerationUnitType<VelocityU, TimeU>> {
+    return Acceleration<T, AccelerationUnitType<VelocityU, TimeU>>{
         velocity.get_value() / time.get_value() *
         velocity.template get_ratio<TimeU>()
     };
