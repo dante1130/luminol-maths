@@ -3,6 +3,8 @@
 #include <ratio>
 
 #include <LuminolMaths/Units/Unit.hpp>
+#include <LuminolMaths/Units/Mass.hpp>
+#include <LuminolMaths/Units/Speed.hpp>
 
 namespace Luminol::Units {
 
@@ -17,7 +19,35 @@ using Microjoule = EnergyUnitType<std::micro>;
 using Nanojoule = EnergyUnitType<std::nano>;
 
 template <std::floating_point T, typename U>
-using Energy = Unit<T, U>;
+class Energy : public Unit<T, U> {
+public:
+    template <typename MassU, typename SpeedU>
+        requires(
+            MassU::type == UnitEnum::Mass && SpeedU::type == UnitEnum::Speed
+        )
+    constexpr Energy(const Mass<T, MassU>& mass, const Speed<T, SpeedU>& speed)
+        : Unit<T, U>{energy_from_mass_and_speed(mass, speed)} {}
+
+private:
+    template <typename MassU, typename SpeedU>
+        requires(
+            MassU::type == UnitEnum::Mass && SpeedU::type == UnitEnum::Speed
+        )
+    constexpr static auto energy_from_mass_and_speed(
+        const Mass<T, MassU>& mass, const Speed<T, SpeedU>& speed
+    ) -> T {
+        const auto mass_in_kg = mass.template as<Kilogram>().get_value();
+        const auto speed_in_mps =
+            speed.template as<MeterPerSecond>().get_value();
+
+        constexpr auto half = T{0.5};
+        const auto joules = half * mass_in_kg * speed_in_mps * speed_in_mps;
+
+        constexpr auto energy_ratio = U::ratio::num / U::ratio::den;
+
+        return joules * (T{1.0} / energy_ratio);
+    }
+};
 
 using Kilojoules = Energy<double, Kilojoule>;
 using Kilojoules_f = Energy<float, Kilojoule>;

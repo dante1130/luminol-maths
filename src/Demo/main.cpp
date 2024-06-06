@@ -70,5 +70,11 @@ auto main() -> int {
                      .get_value()
               << '\n';
 
+    constexpr auto velocity = Luminol::Units::MetersPerSecond{10.0};
+
+    constexpr auto energy = Luminol::Units::Joules{mass, velocity};
+
+    std::cout << "1 kg at 10 m/s: " << energy.get_value() << " J\n";
+
     return 0;
 }
