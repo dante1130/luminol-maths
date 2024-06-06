@@ -21,6 +21,10 @@ using Nanojoule = EnergyUnitType<std::nano>;
 template <std::floating_point T, typename U>
 class Energy : public Unit<T, U> {
 public:
+    constexpr Energy(const T& value) : Unit<T, U>{value} {}
+
+    constexpr Energy(const Unit<T, U>& other) : Unit<T, U>{other} {}
+
     template <typename MassU, typename VelocityU>
         requires(
             MassU::type == UnitEnum::Mass &&
