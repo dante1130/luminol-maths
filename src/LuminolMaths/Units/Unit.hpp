@@ -14,6 +14,7 @@ enum class UnitEnum {
     Energy,
     Force,
     Volume,
+    Density,
 };
 
 template <typename T, const T& Num, const T& Den>
@@ -76,22 +77,6 @@ public:
         -> Unit<T, U> {
         return Unit<T, U>{
             this->get_value() - other.template as<U>().get_value(),
-        };
-    }
-
-    template <typename OtherU>
-    [[nodiscard]] constexpr auto operator*(const Unit<T, OtherU>& other) const
-        -> Unit<T, U> {
-        return Unit<T, U>{
-            this->get_value() * other.template as<U>().get_value(),
-        };
-    }
-
-    template <typename OtherU>
-    [[nodiscard]] constexpr auto operator/(const Unit<T, OtherU>& other) const
-        -> Unit<T, U> {
-        return Unit<T, U>{
-            this->get_value() / other.template as<U>().get_value(),
         };
     }
 

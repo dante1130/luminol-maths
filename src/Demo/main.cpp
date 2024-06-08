@@ -8,6 +8,7 @@
 #include <LuminolMaths/Units/Acceleration.hpp>
 #include <LuminolMaths/Units/Energy.hpp>
 #include <LuminolMaths/Units/Force.hpp>
+#include <LuminolMaths/Units/Density.hpp>
 
 namespace {
 
@@ -81,6 +82,11 @@ auto main() -> int {
 
     std::cout << "Force of 1 kg under 9.81 m/s^2: " << force.get_value()
               << " N\n";
+
+    constexpr auto density = mass / Luminol::Units::CubicMeters{1.0};
+
+    std::cout << "Density of 1 kg in 1 m^3: " << density.get_value()
+              << " kg/m^3\n";
 
     return 0;
 }
