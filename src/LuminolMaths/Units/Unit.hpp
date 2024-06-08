@@ -13,6 +13,7 @@ enum class UnitEnum {
     Acceleration,
     Energy,
     Force,
+    Volume,
 };
 
 template <typename T, const T& Num, const T& Den>
