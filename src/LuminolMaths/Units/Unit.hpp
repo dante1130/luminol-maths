@@ -78,6 +78,22 @@ public:
         };
     }
 
+    template <typename OtherU>
+    [[nodiscard]] constexpr auto operator*(const Unit<T, OtherU>& other) const
+        -> Unit<T, U> {
+        return Unit<T, U>{
+            this->get_value() * other.template as<U>().get_value(),
+        };
+    }
+
+    template <typename OtherU>
+    [[nodiscard]] constexpr auto operator/(const Unit<T, OtherU>& other) const
+        -> Unit<T, U> {
+        return Unit<T, U>{
+            this->get_value() / other.template as<U>().get_value(),
+        };
+    }
+
     [[nodiscard]] constexpr auto operator*(const T& scalar) const -> Unit {
         return Unit<T, U>{this->get_value() * scalar};
     }
@@ -107,6 +123,18 @@ public:
     template <typename OtherU>
     constexpr auto operator-=(const Unit<T, OtherU>& other) -> Unit& {
         this->value -= other.template as<U>().get_value();
+        return *this;
+    }
+
+    template <typename OtherU>
+    constexpr auto operator*=(const Unit<T, OtherU>& other) -> Unit& {
+        this->value *= other.template as<U>().get_value();
+        return *this;
+    }
+
+    template <typename OtherU>
+    constexpr auto operator/=(const Unit<T, OtherU>& other) -> Unit& {
+        this->value /= other.template as<U>().get_value();
         return *this;
     }
 
