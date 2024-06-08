@@ -11,7 +11,8 @@ enum class UnitEnum {
     Velocity,
     Mass,
     Acceleration,
-    Energy
+    Energy,
+    Force,
 };
 
 template <typename T, const T& Num, const T& Den>

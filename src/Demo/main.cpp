@@ -7,6 +7,7 @@
 #include <LuminolMaths/Units/Mass.hpp>
 #include <LuminolMaths/Units/Acceleration.hpp>
 #include <LuminolMaths/Units/Energy.hpp>
+#include <LuminolMaths/Units/Force.hpp>
 
 namespace {
 
@@ -75,6 +76,11 @@ auto main() -> int {
     constexpr auto energy = Luminol::Units::Joules{mass, velocity};
 
     std::cout << "1 kg at 10 m/s: " << energy.get_value() << " J\n";
+
+    constexpr auto force = mass / acceleration;
+
+    std::cout << "Force of 1 kg under 9.81 m/s^2: " << force.get_value()
+              << " N\n";
 
     return 0;
 }
