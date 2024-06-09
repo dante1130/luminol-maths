@@ -9,6 +9,7 @@
 #include <LuminolMaths/Units/Energy.hpp>
 #include <LuminolMaths/Units/Force.hpp>
 #include <LuminolMaths/Units/Density.hpp>
+#include <LuminolMaths/Units/Impulse.hpp>
 
 namespace {
 
@@ -78,7 +79,7 @@ auto main() -> int {
 
     std::cout << "1 kg at 10 m/s: " << energy.get_value() << " J\n";
 
-    constexpr auto force = mass / acceleration;
+    constexpr auto force = mass * acceleration;
 
     std::cout << "Force of 1 kg under 9.81 m/s^2: " << force.get_value()
               << " N\n";
@@ -87,6 +88,11 @@ auto main() -> int {
 
     std::cout << "Density of 1 kg in 1 m^3: " << density.get_value()
               << " kg/m^3\n";
+
+    constexpr auto impulse = mass * velocity;
+
+    std::cout << "Impulse of 1 kg at 10 m/s: " << impulse.get_value()
+              << " Ns\n";
 
     return 0;
 }

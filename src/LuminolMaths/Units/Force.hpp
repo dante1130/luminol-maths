@@ -21,7 +21,7 @@ template <std::floating_point T, typename MassU, typename AccelerationU>
         MassU::type == UnitEnum::Mass &&
         AccelerationU::type == UnitEnum::Acceleration
     )
-constexpr auto operator/(
+constexpr auto operator*(
     const Mass<T, MassU>& mass,
     const Acceleration<T, AccelerationU>& acceleration
 ) -> Force<T, Newton> {
