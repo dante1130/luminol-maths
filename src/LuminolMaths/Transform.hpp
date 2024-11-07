@@ -72,20 +72,21 @@ auto left_handed_look_at_matrix(const LookAtParams<T>& params)
 
     auto result = Matrix<T, 4, 4>::identity();
 
-    result[0][0] = right[0];
-    result[0][1] = right[1];
-    result[0][2] = right[2];
-    result[0][3] = -right.dot(eye);
+    result[0][0] = right.x();
+    result[1][0] = right.y();
+    result[2][0] = right.z();
 
-    result[1][0] = up_vec[0];
-    result[1][1] = up_vec[1];
-    result[1][2] = up_vec[2];
-    result[1][3] = -up_vec.dot(eye);
+    result[0][1] = up_vec.x();
+    result[1][1] = up_vec.y();
+    result[2][1] = up_vec.z();
 
-    result[2][0] = forward[0];
-    result[2][1] = forward[1];
-    result[2][2] = forward[2];
-    result[2][3] = -forward.dot(eye);
+    result[0][2] = forward.x();
+    result[1][2] = forward.y();
+    result[2][2] = forward.z();
+
+    result[3][0] = -right.dot(eye);
+    result[3][1] = -up_vec.dot(eye);
+    result[3][2] = -forward.dot(eye);
 
     return result;
 }
