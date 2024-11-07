@@ -51,6 +51,84 @@ public:
         return result;
     }
 
+    [[nodiscard]] constexpr auto minor(size_t row, size_t column) const
+        -> Matrix<T, M - 1, N - 1>
+        requires(M == N && M > 1)
+    {
+        auto minor_matrix = Matrix<T, M - 1, N - 1>::zero();
+        auto minor_row = size_t{0};
+
+        for (size_t i = 0; i < M; ++i) {
+            if (i == row) {
+                continue;
+            }
+
+            auto minor_column = size_t{0};
+
+            for (size_t j = 0; j < N; ++j) {
+                if (j == column) {
+                    continue;
+                }
+
+                minor_matrix[minor_row][minor_column] = this->matrix[i][j];
+                ++minor_column;
+            }
+
+            ++minor_row;
+        }
+
+        return minor_matrix;
+    }
+
+    [[nodiscard]] constexpr auto cofactor() const -> Matrix
+        requires(M == N)
+    {
+        auto cofactor_matrix = Matrix<T, M, N>::zero();
+
+        for (size_t i = 0; i < M; ++i) {
+            for (size_t j = 0; j < N; ++j) {
+                const auto sign = ((i + j) % 2 == 0) ? 1 : -1;
+                cofactor_matrix[i][j] = this->minor(i, j).determinant() * sign;
+            }
+        }
+
+        return cofactor_matrix;
+    }
+
+    [[nodiscard]] constexpr auto determinant() const -> T
+        requires(M == N)
+    {
+        if constexpr (M == 1) {
+            return this->matrix[0][0];
+        } else if constexpr (M == 2) {
+            return (this->matrix[0][0] * this->matrix[1][1]) -
+                   (this->matrix[0][1] * this->matrix[1][0]);
+        } else {
+            auto result = T{0};
+            for (size_t i = 0; i < M; ++i) {
+                result += this->matrix[0][i] * this->cofactor()[0][i];
+            }
+            return result;
+        }
+    }
+
+    [[nodiscard]] constexpr auto adjugate() const -> Matrix
+        requires(M == N)
+    {
+        return this->cofactor().transpose();
+    }
+
+    [[nodiscard]] constexpr auto inverse() const -> Matrix
+        requires(M == N)
+    {
+        const auto det = this->determinant();
+        if (det == T{0}) {
+            return Matrix::zero();
+        }
+
+        return this->adjugate() / det;
+    }
+
     [[nodiscard]] constexpr auto operator[](size_t index) -> std::array<T, N>& {
         return this->matrix.at(index);
     }
